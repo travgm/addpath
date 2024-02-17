@@ -25,7 +25,7 @@ section '.text' code readable executable
 
 start:
 
-    sub  rsp, 8 * 5
+    sub  rsp, 40
     mov  r8,  mutexName
     xor  rdx, rdx
     xor  rcx, rcx
@@ -33,17 +33,15 @@ start:
     cmp  rax, 0
     je   exit_app
 
-    sub  rsp, 32
+
     mov  rdx, currentDir
     mov  rcx, MAX_PATH
     call [GetCurrentDirectory]
-    add  rsp, 32
     cmp  rax, 0
     je   exit_app
 
     call update_registry
 
-    sub  rsp, 48
     mov  qword [rsp + 40], SW_SHOWNORMAL
     mov  qword [rsp + 32], 0
     mov  r9,  shellParams
@@ -51,7 +49,6 @@ start:
     mov  rdx, shellAction
     mov  rcx, 0
     call [ShellExecuteA]
-    add  rsp, 48
 
 exit_app:
 

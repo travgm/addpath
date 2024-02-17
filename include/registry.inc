@@ -11,7 +11,7 @@ proc update_registry
     cmp  rax, ERROR_SUCCESS
     jne  exit_app
 
-    sub  rsp, 48
+
     mov  qword [rsp + 32], regCurrentPath
     mov  qword [rsp + 40], rLength
     mov  r9,  rType
@@ -19,29 +19,23 @@ proc update_registry
     mov  rdx, regKey
     mov  rcx, [hReg]
     call [RegQueryValueEx]
-    add  rsp, 48
     cmp  rax, ERROR_SUCCESS
     jne  exit_app
 
-    sub  rsp, 48
     mov  rdx, regSep
     mov  rcx, regCurrentPath
     call [lstrcat]
-    add  rsp, 32
-    sub  rsp, 32
+
     mov  rdx, currentDir
     mov  rcx, regCurrentPath
     call [lstrcat]
-    add  rsp, 32
-    sub  rsp, 32
+
     mov  rcx, regCurrentPath
     call [lstrlen]
-    add  rsp, 32
 
     inc  rax
     mov  r10, rax
 
-    sub  rsp, 40
     mov  qword [rsp + 40], r10
     mov  qword [rsp + 32], regCurrentPath
     mov  r9,  REG_SZ
@@ -49,9 +43,10 @@ proc update_registry
     mov  rdx, regKey
     mov  rcx, [hReg]
     call [RegSetValueEx]
-    add  rsp, 40
     cmp  rax, ERROR_SUCCESS
     jne  exit_app
+
+    add rsp, 48
     ret
 
 endp
