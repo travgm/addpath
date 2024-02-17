@@ -12,8 +12,8 @@ proc update_registry
     jne  exit_app
 
     sub  rsp, 48
-    mov  qword [ rsp + 32], regCurrentPath
-    mov  qword [ rsp + 40], rLength
+    mov  qword [rsp + 32], regCurrentPath
+    mov  qword [rsp + 40], rLength
     mov  r9,  rType
     mov  r8,  0
     mov  rdx, regKey

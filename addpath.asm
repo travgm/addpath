@@ -7,9 +7,10 @@ entry start
     RRF_RT_ANY    = 0x0000ffff
 
 section '.data' data readable writeable
-    caption        db 'Addpath',0
-    message        db 'Current directory added to path!',0
     mutexName      db 'addpath_mutex',0
+    shellAction    db 'open',0
+    shellProgram   db 'rundll32.exe',0
+    shellParams    db 'sysdm.cpl,EditEnvironmentVariables',0
     regSubKey      db 'SYSTEM\CurrentControlSet\Control\Session Manager\Environment',0
     regKey         db 'Path',0
     regSep         db ';',0
@@ -42,11 +43,15 @@ start:
 
     call update_registry
 
-    xor  r9, r9
-    mov  r8, caption
-    mov  rdx, message
-    xor  rcx, rcx
-    call [MessageBoxA]
+    sub  rsp, 48
+    mov  qword [rsp + 40], SW_SHOWNORMAL
+    mov  qword [rsp + 32], 0
+    mov  r9,  shellParams
+    mov  r8,  shellProgram
+    mov  rdx, shellAction
+    mov  rcx, 0
+    call [ShellExecuteA]
+    add  rsp, 48
 
 exit_app:
 
@@ -54,8 +59,9 @@ exit_app:
     call [ExitProcess]
 
 section '.idata' import data readable writeable
-    library kernel32, 'KERNEL32.DLL',\
-            user32,   'USER32.DLL',\
+    library kernel32, 'KERNEL32.DLL', \
+            user32,   'USER32.DLL', \
+            shell32,  'SHELL32.DLL', \
             advapi32, 'ADVAPI32.DLL'
 
     import  user32,   MessageBoxA,         'MessageBoxA'
@@ -68,3 +74,4 @@ section '.idata' import data readable writeable
                       CreateMutexA,        'CreateMutexA',\
                       lstrcat,             'lstrcatA',\
                       lstrlen,             'lstrlenA'
+    import  shell32,  ShellExecuteA,       'ShellExecuteA'
