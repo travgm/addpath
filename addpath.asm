@@ -60,11 +60,9 @@ exit_app:
 
 section '.idata' import data readable writeable
     library kernel32, 'KERNEL32.DLL', \
-            user32,   'USER32.DLL', \
             shell32,  'SHELL32.DLL', \
             advapi32, 'ADVAPI32.DLL'
 
-    import  user32,   MessageBoxA,         'MessageBoxA'
     import  advapi32, RegOpenKeyEx,        'RegOpenKeyExA',\
                       RegCloseKey,         'RegCloseKey',\
                       RegQueryValueEx,     'RegQueryValueExA',\
