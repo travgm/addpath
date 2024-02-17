@@ -24,7 +24,6 @@ section '.text' code readable executable
     include 'include/registry.inc'
 
 start:
-
     sub  rsp, 40
     mov  r8,  mutexName
     xor  rdx, rdx
@@ -70,3 +69,18 @@ section '.idata' import data readable writeable
                       lstrcat,             'lstrcatA',\
                       lstrlen,             'lstrlenA'
     import  shell32,  ShellExecuteA,       'ShellExecuteA'
+
+section '.rsrc' resource data readable
+
+    directory RT_VERSION, version
+
+    resource version, 1, LANG_NEUTRAL, vinfo
+
+    versioninfo vinfo,\
+                VOS__WINDOWS32, VFT_APP, VFT2_UNKNOWN,\
+                LANG_ENGLISH+SUBLANG_DEFAULT,0,\
+                'FileDescription','Adds executing path to the system environment path variable',\
+                'LegalCopyright','(C) 2024 Travis Montoya',\
+                'ProductName', 'addpath',\
+                'FileVersion','1.0',\
+                'ProductVersion','1.0'
