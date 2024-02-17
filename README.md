@@ -9,6 +9,11 @@ Assuming you have added the root of fasmg to your system path. Just run:
 
 `.\build.bat`
 
-and it will build with the right headers
+and it will build with the right headers. If you dont't want to build it you can download the executable from the [releases](https://github.com/travgm/addpath/releases/tag/1.0) section.
+
+# running
+Drop addpath.exe in whatever directory you want added to the system path and then run it! 
+
+*Note: You must run it as a user with administrative rights. You can right-click->Run as Administrator if needed.*
 
  
