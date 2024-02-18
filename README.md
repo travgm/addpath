@@ -4,6 +4,10 @@ A small x86_64 utility that when ran from a directory adds that current director
 
 After it adds the directory to the path it opens the system environment variables dialog to verify the changes.
 
+![addpath](https://i.imgur.com/s24o0f9.gif)
+
+*note: There was a pause between launching because of UAC*
+
 # requirements
 - x86_64
 - Tested on Windows 11 Pro
