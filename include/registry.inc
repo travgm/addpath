@@ -45,6 +45,11 @@ proc update_registry
     cmp  rax, ERROR_SUCCESS
     jne  registry_cleanup
 
+; Make sure currentPath doesn't exist in path first
+    call parse_path_variable
+    test rax, rax
+    jnz   already_exists
+
     mov  rdx, regSep
     mov  rcx, regCurrentPath
     call [lstrcat]
@@ -69,7 +74,16 @@ proc update_registry
     cmp  rax, ERROR_SUCCESS
     jne  registry_cleanup
 
-    mov  rax, 0
+    mov  [regError], 0
+    jmp  registry_cleanup
+
+already_exists:
+
+    xor  r9, r9
+    mov  r8, existsCaption
+    mov  rdx, existsMsg
+    xor  rcx, rcx
+    call [MessageBoxA]
 
 registry_cleanup:
 
