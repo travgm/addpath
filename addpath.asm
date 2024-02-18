@@ -1,3 +1,4 @@
+
 format PE64 NX GUI 6.0
 entry start
 
@@ -108,7 +109,10 @@ section '.rsrc' resource data readable
 
     directory RT_VERSION,    version,\
               RT_ICON,       icons,\
-              RT_GROUP_ICON, group_icons
+              RT_GROUP_ICON, group_icons,\
+              RT_MANIFEST,   manifest
+
+    resource manifest, 1, LANG_NEUTRAL, man
 
     resource icons, 1, LANG_NEUTRAL, icon_data
 
@@ -126,3 +130,5 @@ section '.rsrc' resource data readable
                 'ProductVersion','1.1'
 
     icon main_icon, icon_data, 'resources/addpath.ico'
+
+    include 'resources/manifest.inc'
