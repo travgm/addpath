@@ -7,6 +7,7 @@ entry start
     RRF_RT_ANY    = 0x0000ffff
 
 section '.data' data readable writeable
+
     mutexName      db 'addpath_mutex',0
     shellAction    db 'open',0
     shellProgram   db 'rundll32.exe',0
@@ -14,13 +15,16 @@ section '.data' data readable writeable
     regSubKey      db 'SYSTEM\CurrentControlSet\Control\Session Manager\Environment',0
     regKey         db 'Path',0
     regSep         db ';',0
+
 section '.bss' readable writeable
+
     currentDir     rb MAX_PATH
     regValueSz     dq ?
     hReg           dq ?
     currentDirSz   dq ?
     rType          dd ?
     regCurrentPath dq ?
+
 section '.text' code readable executable
 
     include 'include/registry.inc'
@@ -39,9 +43,11 @@ start:
     call [GetCurrentDirectory]
     cmp  rax, 0
     je   exit_app
-
     mov  [currentDirSz], rax
+
     call update_registry
+    cmp  rax, 0
+    jne  exit_app
 
     mov  qword [rsp + 40], SW_SHOWNORMAL
     mov  qword [rsp + 32], 0

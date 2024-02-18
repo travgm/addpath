@@ -20,7 +20,7 @@ proc update_registry
     mov  rcx, [hReg]
     call [RegQueryValueEx]
     cmp  rax, ERROR_SUCCESS
-    jne  exit_app
+    jne  registry_close_key
 
 ; We need to allocate registry value size + current dir size + 1
     mov  rax, [regValueSz]
@@ -43,7 +43,7 @@ proc update_registry
     mov  rcx, [hReg]
     call [RegQueryValueEx]
     cmp  rax, ERROR_SUCCESS
-    jne  exit_app
+    jne  registry_cleanup
 
     mov  rdx, regSep
     mov  rcx, regCurrentPath
@@ -67,12 +67,18 @@ proc update_registry
     mov  rcx, [hReg]
     call [RegSetValueEx]
     cmp  rax, ERROR_SUCCESS
-    jne  exit_app
+    jne  registry_cleanup
+
+    mov  rax, 0
+
+registry_cleanup:
 
     mov  r8,  MEM_RELEASE
     mov  rdx, 0
     mov  rcx, [regCurrentPath]
     call [VirtualFree]
+
+registry_close_key:
 
     mov  rcx, [hReg]
     call [RegCloseKey]
