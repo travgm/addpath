@@ -11,9 +11,32 @@ proc update_registry
     cmp  rax, ERROR_SUCCESS
     jne  exit_app
 
+; First query is to get buffer size needed
+    mov  qword [rsp + 40], regValueSz
+    mov  qword [rsp + 32], 0
+    mov  r9,  0
+    mov  r8,  0
+    mov  rdx, regKey
+    mov  rcx, [hReg]
+    call [RegQueryValueEx]
+    cmp  rax, ERROR_SUCCESS
+    jne  exit_app
+
+; We need to allocate registry value size + current dir size + 1
+    mov  rax, [regValueSz]
+    mov  rbx, [currentDirSz]
+    add  rax, rbx
+    inc  rax
+
+    mov  r9,  PAGE_READWRITE
+    mov  r8,  MEM_COMMIT
+    mov  rdx, rax
+    mov  rcx, 0
+    call [VirtualAlloc]
+    mov  [regCurrentPath], rax
 
     mov  qword [rsp + 32], regCurrentPath
-    mov  qword [rsp + 40], rLength
+    mov  qword [rsp + 40], regValueSz
     mov  r9,  rType
     mov  r8,  0
     mov  rdx, regKey
@@ -45,6 +68,14 @@ proc update_registry
     call [RegSetValueEx]
     cmp  rax, ERROR_SUCCESS
     jne  exit_app
+
+    mov  r8,  MEM_RELEASE
+    mov  rdx, 0
+    mov  rcx, [regCurrentPath]
+    call [VirtualFree]
+
+    mov  rcx, [hReg]
+    call [RegCloseKey]
 
     add rsp, 48
     ret
