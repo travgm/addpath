@@ -34,8 +34,8 @@ section '.bss' readable writeable
 
 section '.text' code readable executable
 
-    include 'include/registry.inc'
-    include 'include/parser.inc'
+    include '../include/registry.inc'
+    include '../include/parser.inc'
 
 start:
     sub  rsp, 40
@@ -131,4 +131,4 @@ section '.rsrc' resource data readable
 
     icon main_icon, icon_data, 'resources/addpath.ico'
 
-    include 'resources/manifest.inc'
+    include '../resources/manifest.inc'
