@@ -129,6 +129,6 @@ section '.rsrc' resource data readable
                 'FileVersion','1.1',\
                 'ProductVersion','1.1'
 
-    icon main_icon, icon_data, 'resources/addpath.ico'
+    icon main_icon, icon_data, '../resources/addpath.ico'
 
     include '../resources/manifest.inc'
